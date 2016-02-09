@@ -7,27 +7,61 @@
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <style>
+  #box {
+    background-color: black;
+    width: 100px;
+    height: 100px;
+    display: none;
+    position: relative;
+  }
+  </style>
+
 </head>
 
 <body>
 
-  <p>how many fingers are you holding up?</p>
-  <input id="myNumber" />
-  <button id="guess">Guess!</button>
+  <p>Your Time: <span id="time"></span></p>
+
+  <div id="box"></div>
 
   <script type="text/javascript">
 
-    document.getElementById("guess").onclick=function() {
+  var clickedTime; var createdTime;
 
-      var x = Math.floor(Math.random()*6);
-
-      while (x != document.getElementById("myNumber").value) {
-        x = Math.floor(Math.random()*6);
-      }
-
-      alert("your number is " + x);
-
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+}
+
+  function doSomething() {
+    setTimeout(function() {
+      var boxStyle = document.getElementById("box").style;
+      boxStyle.backgroundColor=getRandomColor();
+      boxStyle.borderRadius=0;
+      boxStyle.left=Math.random()*600+"px";
+      boxStyle.top=Math.random()*600+"px";
+      if(Math.random()*3 > 2.5) {
+        boxStyle.borderRadius="100px";
+      }
+      boxStyle.display="block";
+      createdTime=Date.now();
+    }, Math.random()*4000);
+  }
+
+  doSomething();
+
+  document.getElementById("box").onclick=function() {
+    this.style.display="none";
+    clickedTime=Date.now()
+    document.getElementById("time").innerHTML=(clickedTime-createdTime)/1000 + "s";
+    doSomething();
+  }
+
 
   </script>
 
